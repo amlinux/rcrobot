@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="62">
+  <logicalFolder name="root" displayName="root" projectFiles="true">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <itemPath>crc.h</itemPath>
+      <itemPath>../robot-firmware/radio.h</itemPath>
+      <itemPath>usart.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="LibraryFiles"
+                   displayName="Library Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="ObjectFiles"
+                   displayName="Object Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>crc.c</itemPath>
+      <itemPath>../robot-firmware/radio.c</itemPath>
+      <itemPath>rchost.c</itemPath>
+      <itemPath>usart.c</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="default" type="2">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <targetDevice>PIC16F1518</targetDevice>
+        <targetHeader></targetHeader>
+        <platformTool>PICkit3PlatformTool</platformTool>
+        <languageToolchain>hi-tech-picc</languageToolchain>
+        <languageToolchainVersion>9.82</languageToolchainVersion>
+        <platform>2</platform>
+      </toolsSet>
+      <compileType>
+        <linkerTool>
+          <linkerLibItems>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+      <HI-TECH-COMP>
+        <property key="extra-include-directories" value=""/>
+        <property key="what-to-do" value="ignore"/>
+        <property key="define-macros"
+                  value="_XTAL_FREQ=16000000;RADIO_EN_ANSEL=ANSELB;RADIO_EN_TRIS=TRISB;RADIO_EN_LAT=LATB;RADIO_TXRX_ANSEL=ANSELB;RADIO_TXRX_TRIS=TRISB;RADIO_TXRX_LAT=LATB;RADIO_SND_ANSEL=ANSELC;RADIO_SND_TRIS=TRISC;RADIO_SND_LAT=LATC;RADIO_RCV_ANSEL=ANSELC;RADIO_RCV_TRIS=TRISC;RADIO_RCV_PORT=PORTC;RADIO_EN_BIT=5;RADIO_TXRX_BIT=4;RADIO_SND_BIT=4;RADIO_RCV_BIT=5"/>
+        <property key="warning-level" value="9"/>
+        <property key="optimization-assembler-files" value="false"/>
+        <property key="verbose" value="false"/>
+        <property key="optimization-debug" value="false"/>
+        <property key="optimization-level" value="-9"/>
+        <property key="preprocess-assembler" value="false"/>
+        <property key="identifier-length" value="31"/>
+        <property key="optimization-global" value="true"/>
+        <property key="undefine-macros" value=""/>
+        <property key="optimization-set" value="default"/>
+        <property key="optimization-speed" value="true"/>
+        <property key="optimization-assembler" value="true"/>
+        <property key="operation-mode" value="lite"/>
+      </HI-TECH-COMP>
+      <HI-TECH-LINK>
+      </HI-TECH-LINK>
+      <PICkit3PlatformTool>
+        <property key="programoptions.preserveprogramrange.end" value="0x1f"/>
+        <property key="memories.id" value="false"/>
+        <property key="Freeze Peripherals" value="true"/>
+        <property key="programoptions.preserveeeprom" value="false"/>
+        <property key="programmertogo.imagename" value=""/>
+        <property key="memories.programmemory" value="true"/>
+        <property key="SecureSegment.SegmentProgramming" value="FullChipProgramming"/>
+        <property key="AutoSelectMemRanges" value="auto"/>
+        <property key="hwtoolclock.frcindebug" value="false"/>
+        <property key="programoptions.usehighvoltageonmclr" value="false"/>
+        <property key="memories.eeprom" value="false"/>
+        <property key="ToolFirmwareFilePath"
+                  value="Press to browse for a specific firmware version"/>
+        <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
+        <property key="programoptions.preserveprogramrange.start" value="0x0"/>
+        <property key="voltagevalue" value="5.0"/>
+        <property key="programoptions.preserveprogramrange" value="false"/>
+        <property key="memories.programmemory.start" value="0x0"/>
+        <property key="programoptions.eraseb4program" value="true"/>
+        <property key="memories.programmemory.end" value="0x3fff"/>
+        <property key="poweroptions.powerenable" value="false"/>
+      </PICkit3PlatformTool>
+    </conf>
+  </confs>
+</configurationDescriptor>

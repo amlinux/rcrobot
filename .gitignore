@@ -1,0 +1,7 @@
+*.obj
+*.lib
+*.ncb
+funclist
+.dep.inc
+*/build
+*/dist
