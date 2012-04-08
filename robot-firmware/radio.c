@@ -1,6 +1,6 @@
 #include <htc.h>
 #include "radio.h"
-#include "rchost.X/crc.h"
+#include "../host-firmware/crc.h"
 
 unsigned char radio_rx_len;
 unsigned char radio_rx_data[64];

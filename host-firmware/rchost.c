@@ -1,6 +1,6 @@
 #include <htc.h>
 #include "usart.h"
-#include "../radio.h"
+#include "../robot-firmware/radio.h"
 
 __CONFIG(FCMEN_OFF & IESO_OFF & CLKOUTEN_OFF & BOREN_ON & CP_OFF & MCLRE_ON &
         PWRTE_OFF & WDTE_OFF & FOSC_INTOSC);
