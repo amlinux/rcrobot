@@ -5,3 +5,5 @@ funclist
 .dep.inc
 */build
 */dist
+*.pyc
+cpp-server/rchostd
