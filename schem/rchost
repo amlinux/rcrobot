@@ -1,0 +1,2 @@
+schematics rchost.sch power.sch rs232.sch radio.sch
+output-name rchost
