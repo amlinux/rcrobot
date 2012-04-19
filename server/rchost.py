@@ -1,4 +1,4 @@
-from concurrence import Tasklet, Channel
+from concurrence import Tasklet, Channel, TimeoutError
 from rcserial import RCSerialStream
 
 def crc(crc, data):
@@ -9,6 +9,9 @@ def crc(crc, data):
         crc >>= 1
     return crc
 
+class BaudRateCalibrationError(Exception):
+    pass
+
 class Host(object):
     "Interface to the hardware"
     def __init__(self, dispatcher, devname):
@@ -16,20 +19,28 @@ class Host(object):
         self.dispatcher = dispatcher
         self.stream = RCSerialStream(devname)
 
+    def send_raw(self, buf):
+        "Send raw data without any checksuming and headers"
+        print "Sending: %s" % (", ".join(["0x%02x" % a for a in buf]))
+        buf = ''.join([chr(a) for a in buf])
+        with self.stream.get_writer() as writer:
+            writer.write_bytes(buf)
+            writer.flush()
+
+    def flush(self):
+        self.stream.flush()
+
     def send(self, pkt):
         "Immediately pushes packet to the serial port"
-        buf = chr(0x5a)
+        buf = [0x5a]
         _crc = 0
         for data in [len(pkt)] + list(pkt):
             if type(data) == str and len(data) == 1:
                 data = ord(data)
             _crc = crc(_crc, data)
-            buf += chr(data)
-        buf += chr(_crc)
-        print "Sending: %s" % (", ".join(["0x%02x" % ord(a) for a in buf]))
-        with self.stream.get_writer() as writer:
-            writer.write_bytes(buf)
-            writer.flush()
+            buf.append(data)
+        buf.append(_crc)
+        self.send_raw(buf)
 
     def loop(self):
         "Infinitely reads serial input and parses packets"
@@ -56,6 +67,23 @@ class Host(object):
                     # checking CRC
                     if _crc == 0:
                         print "Packet received successfully: %s" % (", ".join(["0x%02x" % d for d in data]))
+                        self.dispatcher.receive(data)
+
+    def available(self):
+        "Check whether host is available"
+        req = HostEchoRequest()
+        try:
+            return self.dispatcher.request(req, timeout=3)
+        except TimeoutError:
+            return False
+
+    def calibrate_baudrate(self):
+        "Perform baud rate calibration"
+        req = BaudRateCalibrationRequest()
+        try:
+            return self.dispatcher.request(req, timeout=3)
+        except TimeoutError:
+            raise BaudRateCalibrationError()
 
 class RequestNotImplemented(Exception):
     "This exception is raised by a protocol when it encounters unsupported request"
@@ -93,6 +121,10 @@ class Request(object):
     def valid_response(self, data):
         "Checks whether this data is a valid response for the request"
         return False
+
+    def send(self, host):
+        "Send request to the host. Some requests may need to some specific sending protocol"
+        host.send(self.data())
 
 class Dispatcher(object):
     "Dispatcher implements requests machinery"
@@ -150,7 +182,7 @@ class Dispatcher(object):
             resp_channel.send_exception(DestinationUnreachable())
         else:
             self.sent_requests.append((request, resp_channel))
-            host.send(request.data())
+            request.send(host)
 
     def receive(self, data):
         "Notify dispatcher that packet is received"
@@ -166,3 +198,29 @@ class Dispatcher(object):
             else:
                 i += 1
 
+class HostEchoRequest(Request):
+    "Request to check host availability"
+    def data(self):
+        return ['E']
+
+    def valid_response(self, data):
+        if data == [ord('E')]:
+            return True
+
+class BaudRateCalibrationRequest(Request):
+    "Calibrate frequency generator on the host to match server baud rate"
+    def data(self):
+        return [0xf0]
+
+    def valid_response(self, data):
+        if len(data) == 4 and data[0] == 0xf0:
+            if data[1] == 0:
+                return data[2:]
+            else:
+                raise BaudRateCalibrationError()
+
+    def send(self, host):
+        Request.send(self, host)
+        host.flush()
+        Tasklet.sleep(0.001)
+        host.send_raw([0x55])

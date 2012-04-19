@@ -14,7 +14,7 @@ class RadioDeviceRequest(Request):
         RadioDeviceRequests checks packet header and if it is a radio packet from target device
         performs additional checks with valid_device_response()
         """
-        if data[0] == ord('R') and data[1] == self._addr and data[2] == 1:
+        if len(data) >= 4 and data[0] == ord('R') and data[1] == self._addr and data[2] == 1:
             data = data[3:]
             return self.valid_device_response(data)
     
@@ -47,3 +47,4 @@ class RadioDevice(object):
             req = VersionRequest(self.addr)
             self._protocol_version = self.dispatcher.request(req)
             return self._protocol_version
+

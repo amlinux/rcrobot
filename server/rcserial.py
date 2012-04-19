@@ -5,7 +5,7 @@ from fdsocket import *
 
 class RCSerialStream(BufferedStream):
     def __init__(self, devname):
-        fd = os.open(devname, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK | os.O_EXCL)
+        self.fd = fd = os.open(devname, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK | os.O_EXCL)
         attr = termios.tcgetattr(fd)
         attr[0] = attr[0] & ~(termios.IGNBRK | termios.BRKINT | termios.PARMRK | termios.ISTRIP | termios.INLCR | termios.IGNCR | termios.ICRNL | termios.IXON);
         attr[1] = attr[1] & ~termios.OPOST;
@@ -15,3 +15,5 @@ class RCSerialStream(BufferedStream):
         termios.tcsetattr(fd, termios.TCSANOW, attr)
         BufferedStream.__init__(self, FDStream(fd))
 
+    def flush(self):
+        termios.tcdrain(self.fd)
