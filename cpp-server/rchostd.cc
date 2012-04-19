@@ -206,7 +206,7 @@ public:
 
     void received(unsigned char d)
     {
-       //cout << "Received: " << hex << setw(2) << setfill('0') << (int)d << endl;
+        cout << "Received: " << hex << setw(2) << setfill('0') << (int)d << endl;
         switch (rcv_state) {
             case 0:
                 if (d == 0x5a)
