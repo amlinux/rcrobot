@@ -6,8 +6,13 @@ __CONFIG(FCMEN_OFF & IESO_OFF & CLKOUTEN_OFF & BOREN_ON & CP_OFF & MCLRE_ON &
 __CONFIG(WRT_OFF & VCAPEN_OFF & STVREN_ON & BORV_25 & LPBOR_OFF & LVP_OFF);
 
 #define AUTO_DISABLE_MOTORS 10
+#define VERSION 1
 
 unsigned char motors_disable_timer = 0;
+
+/* Radio send buffer */
+unsigned char radio_len = 0;
+unsigned char radio_data[64];
 
 void interrupt isr()
 {
@@ -55,29 +60,25 @@ void led_init()
 
 void radio_rx_packet()
 {
+    if (radio_len == 0) {
+        radio_data[0] = MYADDR;
+        radio_data[1] = radio_rx_data[0];
+    }
     switch (radio_rx_data[2]) {
         case 'V':
             /* protocol version */
-            LATB |= 0x01;
-            radio_tx_start();
-            radio_tx_data(4);
-            radio_tx_data(MYADDR);
-            radio_tx_data(radio_rx_data[0]);
-            radio_tx_data('V');
-            radio_tx_data(1);
-            radio_tx_finish();
-            LATB &= ~0x01;
+            if (radio_len == 0) {
+                radio_len = 4;
+                radio_data[2] = 'V';
+                radio_data[3] = VERSION;
+            }
             break;
         case 'E':
             /* echo request */
-            LATB |= 0x01;
-            radio_tx_start();
-            radio_tx_data(3);
-            radio_tx_data(MYADDR);
-            radio_tx_data(radio_rx_data[0]);
-            radio_tx_data('E');
-            radio_tx_finish();
-            LATB &= ~0x01;
+            if (radio_len == 0) {
+                radio_len = 3;
+                radio_data[2] = 'E';
+            }
             break;
         case 'M':
             /* set motors */
@@ -87,15 +88,15 @@ void radio_rx_packet()
              * automatically */
         case 'S':
             /* report status */
-            LATB |= 0x01;
-            radio_tx_start();
-            radio_tx_data(4);
-            radio_tx_data(MYADDR);
-            radio_tx_data(radio_rx_data[0]);
-            radio_tx_data('S');
-            radio_tx_data(LATA & 0x1f);
-            radio_tx_finish();
-            LATB &= ~0x01;
+            if (radio_len == 0) {
+                radio_len = 4;
+                radio_data[2] = 'S';
+                radio_data[3] = LATA & 0x1f;
+            }
+            break;
+        case 'A':
+            /* acknowledge buffer */
+            radio_len = 0;
             break;
     }
 }
@@ -110,6 +111,22 @@ int main(void) {
     ei();
 
     while (1) {
-        radio_rx();
+        /* Listen for incoming radio packet */
+        if (radio_rx()) {
+            /* If a radio packet is pending
+             * send it immediately
+             */
+            if (radio_len != 0) {
+                /* Send a packet */
+                unsigned char c;
+                LATB |= 0x01;
+                radio_tx_start();
+                radio_tx_data(radio_len);
+                for (c = 0; c < radio_len; c++)
+                    radio_tx_data(radio_data[c]);
+                radio_tx_finish();
+                LATB &= ~0x01;
+            }
+        }
     }
 }

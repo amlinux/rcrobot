@@ -152,7 +152,7 @@ public:
         receive();
         time_t now = time(0);
         if (ping_running) {
-            if (now != last_time) {
+            if (now > last_time) {
                 pkt_sent++;
                 last_time = now;
                 {
@@ -168,6 +168,7 @@ public:
                 }
                 {
                     Packet wpkt('R');
+                    wpkt.add(0x88);
                     wpkt.add(1);
                     wpkt.add(2);
                     wpkt.add('E');
@@ -175,11 +176,11 @@ public:
                 }
             }
         }
-        if (now > last_stat + 30) {
+/*        if (now > last_stat + 30) {
             Packet wpkt(0xf1);
             send(wpkt);
             last_stat = now;
-        }
+        }*/
     }
 
     void receive()
@@ -234,14 +235,13 @@ public:
                     // packet received
                     Packet pkt(rbuf);
                     unsigned char cmd = pkt.get_buf()[0];
+                    cout << "Received packet: " << pkt << endl;
                     if (cmd == 0xf0 && !ping_running) {
                         ping_running = true;
                         pkt_sent = 0;
                         pkt_recv = 0;
                     } else if (ping_running && cmd == 'E')
                         pkt_recv++;
-                    else
-                        cout << "Received packet: " << pkt << endl;
 /*                    static int n = 0;
                     const Buffer &buf = pkt.get_buf();
                     if (buf[0] == 'R') {

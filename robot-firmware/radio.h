@@ -25,8 +25,10 @@ void radio_tx_finish();
  * If no preamble return immediately. If preamble is running then listen
  * for data. for every byte received call radio_rx_data. If data packet
  * interrupted by another preamble calls radio_rx_reset again and reruns.
- * If receiving timed out calls radio_rx_timeout and returns. */
-void radio_rx();
+ * If receiving timed out calls radio_rx_timeout and returns.
+ * Return value: 1 if success, 0 otherwise.
+ */
+char radio_rx();
 
 /* this callback is called when packet is received successfully
  * packet length is stored in radio_rx_len, data - radio_rx_data */

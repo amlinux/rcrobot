@@ -4,7 +4,7 @@ from concurrence import dispatch, Tasklet
 import logging
 import os
 from rchost import Dispatcher, Host
-from radio import RadioDevice
+from radiodevice import RadioDevice
 
 def main():
     try:
@@ -17,10 +17,15 @@ def main():
         print "Available: %s" % host.available()
 
         dev = RadioDevice(dispatcher, 2)
-        print dev.protocol_version
-        print dev.protocol_version
-        print dev.protocol_version
-        print dev.protocol_version
+        def f():
+            print "Protocol version: %s" % dev.protocol_version
+        #tasklets = []
+        for i in xrange(0, 10):
+            f()
+            #task = Tasklet.new(f)
+            #task()
+            #tasklets.append(task)
+        #Tasklet.join_all(tasklets)
 
         #host.send(Packet('E'))
         #host.send(Packet('R', 1, 2, 'E'))

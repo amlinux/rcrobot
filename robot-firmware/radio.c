@@ -6,6 +6,9 @@ unsigned char radio_rx_len;
 unsigned char radio_rx_data[64];
 unsigned char radio_tx_crc;
 
+unsigned char radio_len = 0;
+unsigned char radio_data[64];
+
 void radio_init()
 {
     RADIO_EN_ANSEL &= ~(1 << RADIO_EN_BIT);
@@ -92,7 +95,7 @@ unsigned char _radio_rx_bit()
     return last;
 }
 
-void radio_rx()
+char radio_rx()
 {
     unsigned char crc, mode, preamble_periods, myaddr;
     /* initialize receiver */
@@ -193,6 +196,7 @@ preamble_ok:
             mode = 0;
             calc_crc(&crc, data);
         } else if (mode > radio_rx_len) {
+            /* Invalid mode */
             goto done;
         } else if (mode < radio_rx_len) {
             #ifdef MYADDR
@@ -208,6 +212,9 @@ preamble_ok:
             calc_crc(&crc, data);
             if (crc == 0) {
                 radio_rx_packet();
+                ei();
+                radio_off();
+                return 1;
             }
             goto done;
         }
@@ -215,4 +222,5 @@ preamble_ok:
 done:
     ei();
     radio_off();
+    return 0;
 }
