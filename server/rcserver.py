@@ -17,25 +17,9 @@ def main():
         print "Available: %s" % host.available()
 
         dev = RadioDevice(dispatcher, 2)
-        def f():
-            print "Protocol version: %s" % dev.protocol_version
-        #tasklets = []
-        for i in xrange(0, 10):
-            f()
-            #task = Tasklet.new(f)
-            #task()
-            #tasklets.append(task)
-        #Tasklet.join_all(tasklets)
+        print "Protocol version: %s" % dev.protocol_version
+        print "ADC data: %s" % dev.adc_data()
 
-        #host.send(Packet('E'))
-        #host.send(Packet('R', 1, 2, 'E'))
-        #host.send(Packet('R', 1, 2, 'V'))
-        #while True:
-            #host.send(Packet('R', 1, 2, 'M', 1+2+16))
-            #host.send(Packet('R', 1, 2, 'M', 0))
-            #host.send(Packet('R', 1, 2, 'M', 1+4+8))
-            #host.send(Packet('R', 1, 2, 'M', 0))
-            #Tasklet.yield_()
         os._exit(0)
     except Exception as e:
         logging.exception(e)

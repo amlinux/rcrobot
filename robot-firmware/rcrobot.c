@@ -1,5 +1,6 @@
 #include <htc.h>
 #include "radio.h"
+#include "adc.h"
 
 __CONFIG(FCMEN_OFF & IESO_OFF & CLKOUTEN_OFF & BOREN_ON & CP_OFF & MCLRE_ON &
         PWRTE_OFF & WDTE_OFF & FOSC_INTOSC);
@@ -13,6 +14,9 @@ unsigned char motors_disable_timer = 0;
 /* Radio send buffer */
 unsigned char radio_len = 0;
 unsigned char radio_data[64];
+
+/* Current ADC values */
+unsigned char adc_data[10];
 
 void interrupt isr()
 {
@@ -98,6 +102,15 @@ void radio_rx_packet()
             /* acknowledge buffer */
             radio_len = 0;
             break;
+        case 'D':
+            /* report ADC status */
+            if (radio_len == 0) {
+                radio_len = 13;
+                radio_data[2] = 'D';
+                for (unsigned char c = 0; c < 10; c++)
+                    radio_data[c + 3] = adc_data[c];
+            }
+            break;
     }
 }
 
@@ -108,6 +121,7 @@ int main(void) {
     //sound_init();
     radio_init();
     motors_init();
+    adc_init();
     ei();
 
     while (1) {
@@ -127,6 +141,20 @@ int main(void) {
                 radio_tx_finish();
                 LATB &= ~0x01;
             }
+        }
+
+        /* Read ADC values sequentally */
+        {
+            static char adc_ptr = 0;
+            const char adc_addr[5] = {5, 15, 11, 9, 30};
+            /* Reading value */
+            adc_measure(adc_addr[adc_ptr]);
+            adc_data[adc_ptr << 1] = ADRESH;
+            adc_data[(adc_ptr << 1) | 1] = ADRESL;
+            /* Incrementing address */
+            adc_ptr++;
+            if (adc_ptr >= 5)
+                adc_ptr = 0;
         }
     }
 }

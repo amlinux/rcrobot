@@ -32,7 +32,7 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/_ext/477258191/crc.p1 ${OBJECTDIR}/radio.p1 ${OBJECTDIR}/rcrobot.p1
+OBJECTFILES=${OBJECTDIR}/_ext/477258191/crc.p1 ${OBJECTDIR}/adc.p1 ${OBJECTDIR}/radio.p1 ${OBJECTDIR}/rcrobot.p1
 
 
 CFLAGS=
@@ -94,6 +94,16 @@ ifneq (,$(findstring MINGW32,$(OS_CURRENT)))
 else 
 	@cat ${OBJECTDIR}/_ext/477258191/crc.dep | sed -e 's/^ *//' -e 's/^.*$$/ &\\/g'  >> ${OBJECTDIR}/_ext/477258191/crc.p1.d
 endif
+${OBJECTDIR}/adc.p1: adc.c  nbproject/Makefile-${CND_CONF}.mk
+	${MKDIR} ${OBJECTDIR} 
+	${MP_CC} --pass1 adc.c $(MP_EXTRA_CC_PRE) -q --chip=$(MP_PROCESSOR_OPTION) -P  --outdir=${OBJECTDIR} -D_XTAL_FREQ=16000000 -DRADIO_EN_ANSEL=ANSELC -DRADIO_EN_TRIS=TRISC -DRADIO_EN_LAT=LATC -DRADIO_TXRX_ANSEL=ANSELC -DRADIO_TXRX_TRIS=TRISC -DRADIO_TXRX_LAT=LATC -DRADIO_SND_ANSEL=ANSELC -DRADIO_SND_TRIS=TRISC -DRADIO_SND_LAT=LATC -DRADIO_RCV_ANSEL=ANSELC -DRADIO_RCV_TRIS=TRISC -DRADIO_RCV_PORT=PORTC -DRADIO_EN_BIT=4 -DRADIO_TXRX_BIT=5 -DRADIO_SND_BIT=6 -DRADIO_RCV_BIT=7 -DMYADDR=2 -N31 --warn=9 --runtime=default,+clear,+init,-keep,+osccal,-resetbits,-download,+stackcall,+clib --summary=default,-psect,-class,+mem,-hex --opt=default,+asm,-asmfile,+speed,-space,-debug,-9 -D__DEBUG --debugger=pickit3  --double=24 --float=24 --addrqual=ignore --mode=lite -g --asmlist "--errformat=%f:%l: error: %s" "--msgformat=%f:%l: advisory: %s" "--warnformat=%f:%l warning: %s"
+	${MP_CC} --scandep --pass1 adc.c $(MP_EXTRA_CC_PRE) -q --chip=$(MP_PROCESSOR_OPTION) -P  --outdir=${OBJECTDIR} -D_XTAL_FREQ=16000000 -DRADIO_EN_ANSEL=ANSELC -DRADIO_EN_TRIS=TRISC -DRADIO_EN_LAT=LATC -DRADIO_TXRX_ANSEL=ANSELC -DRADIO_TXRX_TRIS=TRISC -DRADIO_TXRX_LAT=LATC -DRADIO_SND_ANSEL=ANSELC -DRADIO_SND_TRIS=TRISC -DRADIO_SND_LAT=LATC -DRADIO_RCV_ANSEL=ANSELC -DRADIO_RCV_TRIS=TRISC -DRADIO_RCV_PORT=PORTC -DRADIO_EN_BIT=4 -DRADIO_TXRX_BIT=5 -DRADIO_SND_BIT=6 -DRADIO_RCV_BIT=7 -DMYADDR=2 -N31 --warn=9 --runtime=default,+clear,+init,-keep,+osccal,-resetbits,-download,+stackcall,+clib --opt=default,+asm,-asmfile,+speed,-space,-debug,-9 -D__DEBUG --debugger=pickit3  --double=24 --float=24 --addrqual=ignore --mode=lite -g --asmlist "--errformat=%f:%l: error: %s" "--msgformat=%f:%l: advisory: %s" "--warnformat=%f:%l warning: %s"
+	echo "${OBJECTDIR}/adc.p1:\\" > ${OBJECTDIR}/adc.p1.d
+ifneq (,$(findstring MINGW32,$(OS_CURRENT))) 
+	@cat ${OBJECTDIR}/adc.dep | sed -e 's/^ *//' -e 's/\\/\//g' -e 's/ /\\ /g' -e 's/^.*$$/ &\\/g'  >> ${OBJECTDIR}/adc.p1.d
+else 
+	@cat ${OBJECTDIR}/adc.dep | sed -e 's/^ *//' -e 's/^.*$$/ &\\/g'  >> ${OBJECTDIR}/adc.p1.d
+endif
 ${OBJECTDIR}/rcrobot.p1: rcrobot.c  nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} ${OBJECTDIR} 
 	${MP_CC} --pass1 rcrobot.c $(MP_EXTRA_CC_PRE) -q --chip=$(MP_PROCESSOR_OPTION) -P  --outdir=${OBJECTDIR} -D_XTAL_FREQ=16000000 -DRADIO_EN_ANSEL=ANSELC -DRADIO_EN_TRIS=TRISC -DRADIO_EN_LAT=LATC -DRADIO_TXRX_ANSEL=ANSELC -DRADIO_TXRX_TRIS=TRISC -DRADIO_TXRX_LAT=LATC -DRADIO_SND_ANSEL=ANSELC -DRADIO_SND_TRIS=TRISC -DRADIO_SND_LAT=LATC -DRADIO_RCV_ANSEL=ANSELC -DRADIO_RCV_TRIS=TRISC -DRADIO_RCV_PORT=PORTC -DRADIO_EN_BIT=4 -DRADIO_TXRX_BIT=5 -DRADIO_SND_BIT=6 -DRADIO_RCV_BIT=7 -DMYADDR=2 -N31 --warn=9 --runtime=default,+clear,+init,-keep,+osccal,-resetbits,-download,+stackcall,+clib --summary=default,-psect,-class,+mem,-hex --opt=default,+asm,-asmfile,+speed,-space,-debug,-9 -D__DEBUG --debugger=pickit3  --double=24 --float=24 --addrqual=ignore --mode=lite -g --asmlist "--errformat=%f:%l: error: %s" "--msgformat=%f:%l: advisory: %s" "--warnformat=%f:%l warning: %s"
@@ -124,6 +134,16 @@ ifneq (,$(findstring MINGW32,$(OS_CURRENT)))
 	@cat ${OBJECTDIR}/_ext/477258191/crc.dep | sed -e 's/^ *//' -e 's/\\/\//g' -e 's/ /\\ /g' -e 's/^.*$$/ &\\/g'  >> ${OBJECTDIR}/_ext/477258191/crc.p1.d
 else 
 	@cat ${OBJECTDIR}/_ext/477258191/crc.dep | sed -e 's/^ *//' -e 's/^.*$$/ &\\/g'  >> ${OBJECTDIR}/_ext/477258191/crc.p1.d
+endif
+${OBJECTDIR}/adc.p1: adc.c  nbproject/Makefile-${CND_CONF}.mk
+	${MKDIR} ${OBJECTDIR} 
+	${MP_CC} --pass1 adc.c $(MP_EXTRA_CC_PRE) -q --chip=$(MP_PROCESSOR_OPTION) -P  --outdir=${OBJECTDIR} -D_XTAL_FREQ=16000000 -DRADIO_EN_ANSEL=ANSELC -DRADIO_EN_TRIS=TRISC -DRADIO_EN_LAT=LATC -DRADIO_TXRX_ANSEL=ANSELC -DRADIO_TXRX_TRIS=TRISC -DRADIO_TXRX_LAT=LATC -DRADIO_SND_ANSEL=ANSELC -DRADIO_SND_TRIS=TRISC -DRADIO_SND_LAT=LATC -DRADIO_RCV_ANSEL=ANSELC -DRADIO_RCV_TRIS=TRISC -DRADIO_RCV_PORT=PORTC -DRADIO_EN_BIT=4 -DRADIO_TXRX_BIT=5 -DRADIO_SND_BIT=6 -DRADIO_RCV_BIT=7 -DMYADDR=2 -N31 --warn=9 --runtime=default,+clear,+init,-keep,+osccal,-resetbits,-download,+stackcall,+clib --summary=default,-psect,-class,+mem,-hex --opt=default,+asm,-asmfile,+speed,-space,-debug,-9  --double=24 --float=24 --addrqual=ignore --mode=lite -g --asmlist "--errformat=%f:%l: error: %s" "--msgformat=%f:%l: advisory: %s" "--warnformat=%f:%l warning: %s"
+	${MP_CC} --scandep --pass1 adc.c $(MP_EXTRA_CC_PRE) -q --chip=$(MP_PROCESSOR_OPTION) -P  --outdir=${OBJECTDIR} -D_XTAL_FREQ=16000000 -DRADIO_EN_ANSEL=ANSELC -DRADIO_EN_TRIS=TRISC -DRADIO_EN_LAT=LATC -DRADIO_TXRX_ANSEL=ANSELC -DRADIO_TXRX_TRIS=TRISC -DRADIO_TXRX_LAT=LATC -DRADIO_SND_ANSEL=ANSELC -DRADIO_SND_TRIS=TRISC -DRADIO_SND_LAT=LATC -DRADIO_RCV_ANSEL=ANSELC -DRADIO_RCV_TRIS=TRISC -DRADIO_RCV_PORT=PORTC -DRADIO_EN_BIT=4 -DRADIO_TXRX_BIT=5 -DRADIO_SND_BIT=6 -DRADIO_RCV_BIT=7 -DMYADDR=2 -N31 --warn=9 --runtime=default,+clear,+init,-keep,+osccal,-resetbits,-download,+stackcall,+clib --opt=default,+asm,-asmfile,+speed,-space,-debug,-9  --double=24 --float=24 --addrqual=ignore --mode=lite -g --asmlist "--errformat=%f:%l: error: %s" "--msgformat=%f:%l: advisory: %s" "--warnformat=%f:%l warning: %s"
+	echo "${OBJECTDIR}/adc.p1:\\" > ${OBJECTDIR}/adc.p1.d
+ifneq (,$(findstring MINGW32,$(OS_CURRENT))) 
+	@cat ${OBJECTDIR}/adc.dep | sed -e 's/^ *//' -e 's/\\/\//g' -e 's/ /\\ /g' -e 's/^.*$$/ &\\/g'  >> ${OBJECTDIR}/adc.p1.d
+else 
+	@cat ${OBJECTDIR}/adc.dep | sed -e 's/^ *//' -e 's/^.*$$/ &\\/g'  >> ${OBJECTDIR}/adc.p1.d
 endif
 ${OBJECTDIR}/rcrobot.p1: rcrobot.c  nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} ${OBJECTDIR} 

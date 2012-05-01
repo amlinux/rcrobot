@@ -7,3 +7,4 @@ funclist
 */dist
 *.pyc
 cpp-server/rchostd
+\#*\#

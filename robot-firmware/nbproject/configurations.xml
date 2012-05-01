@@ -4,6 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>adc.h</itemPath>
       <itemPath>../host-firmware/crc.h</itemPath>
       <itemPath>radio.h</itemPath>
     </logicalFolder>
@@ -18,6 +19,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>adc.c</itemPath>
       <itemPath>../host-firmware/crc.c</itemPath>
       <itemPath>radio.c</itemPath>
       <itemPath>rcrobot.c</itemPath>
@@ -57,10 +59,10 @@
         <property key="optimization-debug" value="false"/>
         <property key="optimization-level" value="-9"/>
         <property key="preprocess-assembler" value="false"/>
-        <property key="optimization-global" value="true"/>
         <property key="identifier-length" value="31"/>
-        <property key="optimization-set" value="default"/>
+        <property key="optimization-global" value="true"/>
         <property key="undefine-macros" value=""/>
+        <property key="optimization-set" value="default"/>
         <property key="optimization-speed" value="true"/>
         <property key="optimization-assembler" value="true"/>
         <property key="operation-mode" value="lite"/>
@@ -85,8 +87,8 @@
         <property key="programoptions.preserveprogramrange.start" value="0x0"/>
         <property key="voltagevalue" value="5.0"/>
         <property key="programoptions.preserveprogramrange" value="false"/>
-        <property key="programoptions.eraseb4program" value="true"/>
         <property key="memories.programmemory.start" value="0x0"/>
+        <property key="programoptions.eraseb4program" value="true"/>
         <property key="memories.programmemory.end" value="0x3fff"/>
         <property key="poweroptions.powerenable" value="false"/>
       </PICkit3PlatformTool>

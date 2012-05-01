@@ -45,6 +45,18 @@ class VersionRequest(RadioDeviceRequest):
         if len(data) == 2 and data[0] == ord('V'):
             return data[1]
 
+class ADCRequest(RadioDeviceRequest):
+    def __init__(self, addr):
+        RadioDeviceRequest.__init__(self, addr, ['D'])
+        self.primary_key = "ADCRequest-%d" % addr
+
+    def valid_device_response(self, data):
+        if len(data) == 11 and data[0] == ord('D'):
+            adc = []
+            for i in xrange(0, 5):
+                adc.append(data[i * 2 + 1] * 256 + data[i * 2 + 2])
+            return adc
+
 class RadioDevice(object):
     "Interface to the remote device"
     def __init__(self, dispatcher, addr):
@@ -60,3 +72,6 @@ class RadioDevice(object):
             self._protocol_version = self.dispatcher.request(req)
             return self._protocol_version
 
+    def adc_data(self):
+        req = ADCRequest(self.addr)
+        return self.dispatcher.request(req)
