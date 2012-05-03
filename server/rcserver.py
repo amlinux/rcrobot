@@ -20,7 +20,7 @@ def main():
         print "Protocol version: %s" % dev.protocol_version
 
         while True:
-            print "ADC data: %s" % dev.adc_data()
+            print "ADC data: %s, supply voltage: %.2f" % (dev.adc_data(), dev.supply_voltage())
             Tasklet.sleep(1)
 
         os._exit(0)
