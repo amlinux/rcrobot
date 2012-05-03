@@ -51,9 +51,9 @@ class ADCRequest(RadioDeviceRequest):
         self.primary_key = "ADCRequest-%d" % addr
 
     def valid_device_response(self, data):
-        if len(data) == 11 and data[0] == ord('D'):
+        if len(data) == 13 and data[0] == ord('D'):
             adc = []
-            for i in xrange(0, 5):
+            for i in xrange(0, 6):
                 adc.append(data[i * 2 + 1] * 256 + data[i * 2 + 2])
             return adc
 
@@ -75,3 +75,11 @@ class RadioDevice(object):
     def adc_data(self):
         req = ADCRequest(self.addr)
         return self.dispatcher.request(req)
+
+    def supply_voltage(self):
+        req = ADCRequest(self.addr)
+        res = self.dispatcher.request(req)
+        if type(res) != list:
+            return None
+        else:
+            return round(res[5] * 5.0 / 1024.0 * 8.5, 2)

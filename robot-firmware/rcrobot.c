@@ -16,7 +16,7 @@ unsigned char radio_len = 0;
 unsigned char radio_data[64];
 
 /* Current ADC values */
-unsigned char adc_data[10];
+unsigned char adc_data[12];
 
 void interrupt isr()
 {
@@ -105,10 +105,19 @@ void radio_rx_packet()
         case 'D':
             /* report ADC status */
             if (radio_len == 0) {
-                radio_len = 13;
+                radio_len = 15;
                 radio_data[2] = 'D';
-                for (unsigned char c = 0; c < 10; c++)
+                for (unsigned char c = 0; c < 12; c++)
                     radio_data[c + 3] = adc_data[c];
+            }
+            break;
+        case 'T':
+            /* report temperature (raw ADC value) */
+            if (radio_len == 0) {
+                radio_len = 5;
+                radio_data[2] = 'T';
+                radio_data[3] = adc_data[8];
+                radio_data[4] = adc_data[9];
             }
             break;
     }
@@ -146,15 +155,30 @@ int main(void) {
         /* Read ADC values sequentally */
         {
             static char adc_ptr = 0;
-            const char adc_addr[5] = {5, 15, 11, 9, 30};
+            const char adc_addr[6] = {4, 15, 11, 9, 30, 13};
             /* Reading value */
-            adc_measure(adc_addr[adc_ptr]);
+            char adc_id = adc_addr[adc_ptr];
+            adc_measure(adc_id);
             adc_data[adc_ptr << 1] = ADRESH;
             adc_data[(adc_ptr << 1) | 1] = ADRESL;
             /* Incrementing address */
             adc_ptr++;
-            if (adc_ptr >= 5)
+            if (adc_ptr >= 6)
                 adc_ptr = 0;
+#ifdef FALSE_DEF
+            /* Checking battery voltage */
+            if (adc_id == 13) {
+                /* Voltage less then 3.0V */
+                if (ADRESH == 0 && ADRESL < 144) {
+                    /* Power off */
+                    LATA = 0;
+                    LATB = 0;
+                    LATC = 0;
+                    di();
+                    SLEEP();
+                }
+            }
+#endif
         }
     }
 }

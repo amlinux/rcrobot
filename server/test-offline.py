@@ -32,7 +32,7 @@ class EmulatedHost(object):
                 self.dispatcher.receive([ord('R'), 3, 1, 4, 5, 6])
             elif pkt == ['R', 5, 1, 2, 'D']:
                 # ADC data request
-                self.dispatcher.receive([ord('R'), 2, 1, ord('D'), 0, 0, 0, 1, 1, 0, 4, 0, 255, 255])
+                self.dispatcher.receive([ord('R'), 2, 1, ord('D'), 0, 0, 0, 1, 1, 0, 4, 0, 255, 255, 0, 184])
 
     def send(self, pkt):
         self._ch.send(pkt)
@@ -115,7 +115,11 @@ class TestDispatcher(EmulatedTest):
 
     def testADC(self):
         dev = RadioDevice(self.dispatcher, 2)
-        self.assertEqual(dev.adc_data(), [0, 1, 256, 1024, 65535])
+        self.assertEqual(dev.adc_data(), [0, 1, 256, 1024, 65535, 184])
+
+    def testSupplyVoltage(self):
+        dev = RadioDevice(self.dispatcher, 2)
+        self.assertEqual(dev.supply_voltage(), 7.64)
 
 class TestRemoteDevice(EmulatedTest):
     def testVersion(self):

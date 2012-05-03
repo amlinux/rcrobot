@@ -18,7 +18,10 @@ def main():
 
         dev = RadioDevice(dispatcher, 2)
         print "Protocol version: %s" % dev.protocol_version
-        print "ADC data: %s" % dev.adc_data()
+
+        while True:
+            print "ADC data: %s" % dev.adc_data()
+            Tasklet.sleep(1)
 
         os._exit(0)
     except Exception as e:
