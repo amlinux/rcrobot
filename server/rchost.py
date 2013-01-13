@@ -377,5 +377,5 @@ class BaudRateCalibrationRequest(Request):
     def send(self, host):
         Request.send(self, host)
         host.flush()
-        Tasklet.sleep(0.001)
+        Tasklet.sleep(0.008)
         host.send_raw([0x55])

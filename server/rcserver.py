@@ -18,7 +18,7 @@ import django.core.handlers.wsgi
 def main():
     try:
         dispatcher = Dispatcher()
-        host = Host(dispatcher, "/dev/ttyS0")
+        host = Host(dispatcher, "/dev/ttyUSB0")
         dispatcher.add_host(host)
         Tasklet.new(dispatcher.loop)()
 
