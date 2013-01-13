@@ -172,6 +172,7 @@ void usart_check()
                 // clearing receiver FIFO
                 while (RCIF)
                     RCREG;
+                ABDOVF = 0;
                 ABDEN = 1;
                 // timeout 16ms
                 OPTION_REG = (OPTION_REG & 0xc0) | 0x07;
@@ -182,12 +183,20 @@ void usart_check()
                 while (ABDEN) {
                     if (T0IF) {
                         usart_calibration_errors++;
+                        ABDEN = 0;
+                        ABDOVF = 0;
                         SPBRGH = 0;
                         SPBRGL = 207;
                         error = 1;
                         break;
                     }
                 }
+                if (SPBRGH > 0 || SPBRGL < 200 || SPBRGL > 220) {
+                    SPBRGH = 0;
+                    SPBRGL = 207;
+                    error = 2;
+                }
+                usart_check_errors();
                 usart_pkt_send(0xf0, 4);
                 usart_pkt_put(error);
                 usart_pkt_put(SPBRGH);

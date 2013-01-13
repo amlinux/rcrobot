@@ -47,50 +47,68 @@
           <linkerLibItems>
           </linkerLibItems>
         </linkerTool>
+        <loading>
+          <useAlternateLoadableFile>false</useAlternateLoadableFile>
+          <alternateLoadableFile></alternateLoadableFile>
+        </loading>
       </compileType>
+      <makeCustomizationType>
+        <makeCustomizationPreStepEnabled>false</makeCustomizationPreStepEnabled>
+        <makeCustomizationPreStep></makeCustomizationPreStep>
+        <makeCustomizationPostStepEnabled>false</makeCustomizationPostStepEnabled>
+        <makeCustomizationPostStep></makeCustomizationPostStep>
+        <makeCustomizationPutChecksumInUserID>false</makeCustomizationPutChecksumInUserID>
+        <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
+        <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
+      </makeCustomizationType>
       <HI-TECH-COMP>
-        <property key="extra-include-directories" value=""/>
-        <property key="what-to-do" value="ignore"/>
         <property key="define-macros"
                   value="_XTAL_FREQ=16000000;RADIO_EN_ANSEL=ANSELB;RADIO_EN_TRIS=TRISB;RADIO_EN_LAT=LATB;RADIO_TXRX_ANSEL=ANSELB;RADIO_TXRX_TRIS=TRISB;RADIO_TXRX_LAT=LATB;RADIO_SND_ANSEL=ANSELC;RADIO_SND_TRIS=TRISC;RADIO_SND_LAT=LATC;RADIO_RCV_ANSEL=ANSELC;RADIO_RCV_TRIS=TRISC;RADIO_RCV_PORT=PORTC;RADIO_EN_BIT=5;RADIO_TXRX_BIT=4;RADIO_SND_BIT=4;RADIO_RCV_BIT=5"/>
-        <property key="warning-level" value="9"/>
-        <property key="optimization-assembler-files" value="false"/>
-        <property key="verbose" value="false"/>
-        <property key="optimization-debug" value="false"/>
-        <property key="optimization-level" value="-9"/>
-        <property key="preprocess-assembler" value="false"/>
+        <property key="extra-include-directories" value=""/>
         <property key="identifier-length" value="31"/>
+        <property key="operation-mode" value="lite"/>
+        <property key="optimization-assembler" value="true"/>
+        <property key="optimization-assembler-files" value="false"/>
+        <property key="optimization-debug" value="false"/>
         <property key="optimization-global" value="true"/>
-        <property key="undefine-macros" value=""/>
+        <property key="optimization-level" value="-9"/>
         <property key="optimization-set" value="default"/>
         <property key="optimization-speed" value="true"/>
-        <property key="optimization-assembler" value="true"/>
-        <property key="operation-mode" value="lite"/>
+        <property key="preprocess-assembler" value="false"/>
+        <property key="undefine-macros" value=""/>
+        <property key="verbose" value="false"/>
+        <property key="warning-level" value="9"/>
+        <property key="what-to-do" value="ignore"/>
       </HI-TECH-COMP>
       <HI-TECH-LINK>
       </HI-TECH-LINK>
       <PICkit3PlatformTool>
-        <property key="programoptions.preserveprogramrange.end" value="0x1f"/>
-        <property key="memories.id" value="false"/>
-        <property key="Freeze Peripherals" value="true"/>
-        <property key="programoptions.preserveeeprom" value="false"/>
-        <property key="programmertogo.imagename" value=""/>
-        <property key="memories.programmemory" value="true"/>
-        <property key="SecureSegment.SegmentProgramming" value="FullChipProgramming"/>
         <property key="AutoSelectMemRanges" value="auto"/>
-        <property key="hwtoolclock.frcindebug" value="false"/>
-        <property key="programoptions.usehighvoltageonmclr" value="false"/>
-        <property key="memories.eeprom" value="false"/>
+        <property key="Freeze Peripherals" value="true"/>
+        <property key="SecureSegment.SegmentProgramming" value="FullChipProgramming"/>
         <property key="ToolFirmwareFilePath"
                   value="Press to browse for a specific firmware version"/>
         <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
-        <property key="programoptions.preserveprogramrange.start" value="0x0"/>
-        <property key="voltagevalue" value="5.0"/>
-        <property key="programoptions.preserveprogramrange" value="false"/>
-        <property key="memories.programmemory.start" value="0x0"/>
-        <property key="programoptions.eraseb4program" value="true"/>
+        <property key="hwtoolclock.frcindebug" value="false"/>
+        <property key="memories.aux" value="false"/>
+        <property key="memories.eeprom" value="false"/>
+        <property key="memories.flashdata" value="true"/>
+        <property key="memories.id" value="false"/>
+        <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.end" value="0x3fff"/>
+        <property key="memories.programmemory.start" value="0x0"/>
         <property key="poweroptions.powerenable" value="false"/>
+        <property key="programmertogo.imagename" value=""/>
+        <property key="programoptions.eraseb4program" value="true"/>
+        <property key="programoptions.pgmspeed" value="2"/>
+        <property key="programoptions.preserveeeprom" value="false"/>
+        <property key="programoptions.preserveprogramrange" value="false"/>
+        <property key="programoptions.preserveprogramrange.end" value="0x1f"/>
+        <property key="programoptions.preserveprogramrange.start" value="0x0"/>
+        <property key="programoptions.preserveuserid" value="false"/>
+        <property key="programoptions.usehighvoltageonmclr" value="false"/>
+        <property key="programoptions.uselvpprogramming" value="false"/>
+        <property key="voltagevalue" value="5.0"/>
       </PICkit3PlatformTool>
     </conf>
   </confs>

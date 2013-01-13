@@ -4,7 +4,7 @@
 
 __CONFIG(FCMEN_OFF & IESO_OFF & CLKOUTEN_OFF & BOREN_ON & CP_OFF & MCLRE_ON &
         PWRTE_OFF & WDTE_OFF & FOSC_INTOSC);
-__CONFIG(WRT_OFF & VCAPEN_OFF & STVREN_ON & BORV_25 & LPBOR_OFF & LVP_OFF);
+__CONFIG(WRT_OFF & VCAPEN_OFF & STVREN_ON & BORV_LO & LPBOR_OFF & LVP_OFF);
 
 unsigned char radio_pkt_id;
 unsigned char radio_len = 0;
@@ -87,6 +87,9 @@ int main(void) {
     timer_init();
     ei();
 
+    /* Enable LED */
+    LATB |= 0x01;
+
     /* Sent 'reset' notification to the master */
     usart_pkt_send('R', 1);
 
@@ -100,13 +103,13 @@ int main(void) {
         if (radio_len != 0) {
             /* Send a packet */
             unsigned char c;
-            LATB |= 0x01;
+            LATB |= 0x02;
             radio_tx_start();
             radio_tx_data(radio_len);
             for (c = 0; c < radio_len; c++)
                 radio_tx_data(radio_data[c]);
             radio_tx_finish();
-            LATB &= ~0x01;
+            LATB &= ~0x02;
             /* Wait for a response packet for 0.064*31 = 1.984ms */
             wait_for_preamble = 31;
             while (1) {
@@ -117,14 +120,14 @@ int main(void) {
                         usart_pkt_send('Y', 2);
                         usart_pkt_put(radio_pkt_id);
                         /* Sent acknowledge packet */
-                        LATB |= 0x01;
+                        LATB |= 0x02;
                         radio_tx_start();
                         radio_tx_data(3);
                         radio_tx_data(radio_data[0]);
                         radio_tx_data(radio_data[1]);
                         radio_tx_data('A');
                         radio_tx_finish();
-                        LATB &= ~0x01;
+                        LATB &= ~0x02;
                     } else {
                         /* Received invalid packet */
                         usart_pkt_send('N', 3);

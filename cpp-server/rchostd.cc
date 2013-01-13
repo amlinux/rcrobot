@@ -297,11 +297,11 @@ public:
         Packet wpkt(0xf0);
         send(wpkt);
         m_port.flush();
-        usleep(1000);
+        usleep(8000);
         unsigned char sync = 0x55;
         m_port.write_all(&sync, 1);
         m_port.flush();
-        usleep(1000);
+        usleep(8000);
     }
 
 private:
@@ -329,7 +329,7 @@ private:
 int main()
 {
     try {
-        SerialPort port("/dev/ttyS0");
+        SerialPort port("/dev/ttyUSB0");
         RCHostServer srv(port);
         srv.calibrate();
         while (1) {
